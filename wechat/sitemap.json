@@ -1,0 +1,9 @@
+{
+  "desc": "EventRegister sitemap",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "description": "EventRegister WeChat Mini Program",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "projectname": "event-register",
+  "appid": "touristappid",
+  "libVersion": "3.4.0",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "packOptions": {
+    "ignore": []
+  }
+}

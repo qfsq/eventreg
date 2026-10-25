@@ -1,0 +1,11 @@
+[build]
+target = "index.html"
+dist = "dist"
+
+[serve]
+port = 3000
+open = false
+
+[serve.proxy]
+"/api" = "http://127.0.0.1:8080"
+"/health" = "http://127.0.0.1:8080"

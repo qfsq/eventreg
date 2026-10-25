@@ -1,0 +1,69 @@
+<view class="page">
+  <view class="hero">
+    <text class="title">EventRegister</text>
+    <text class="subtitle">Log daily activities and keep your streaks alive.</text>
+    <view class="badge" wx:if="{{demoAccount}}">Demo account</view>
+  </view>
+
+  <view class="card">
+    <view class="field">
+      <text class="label">Category</text>
+      <picker
+        range="{{categoryLabels}}"
+        value="{{selectedCategoryIndex}}"
+        bindchange="bindPickerChange"
+      >
+        <view class="picker">{{selectedCategoryLabel}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="label">Title</text>
+      <input
+        class="input"
+        value="{{title}}"
+        maxlength="255"
+        placeholder="e.g. Finished module draft"
+        bindinput="onTitleInput"
+      />
+    </view>
+
+    <view class="field">
+      <text class="label">Notes</text>
+      <textarea
+        class="textarea"
+        value="{{content}}"
+        maxlength="20000"
+        placeholder="Optional details..."
+        bindinput="onContentInput"
+      ></textarea>
+    </view>
+
+    <button
+      class="primary"
+      loading="{{submitting}}"
+      disabled="{{submitting}}"
+      bindtap="submitEvent"
+    >
+      Log event
+    </button>
+  </view>
+
+  <view class="section-heading">
+    <text class="section-title">Activity summaries</text>
+    <text class="section-hint">UTC days</text>
+  </view>
+
+  <view class="state" wx:if="{{loading}}">Loading...</view>
+  <view class="state error" wx:elif="{{error}}">{{error}}</view>
+  <view class="grid" wx:else>
+    <view class="summary" wx:for="{{summaries}}" wx:key="category">
+      <text class="summary-title">{{item.label}}</text>
+      <text class="summary-count">{{item.total_count}}</text>
+      <text class="summary-meta">Streak: {{item.streak_days}} day(s)</text>
+      <text class="summary-meta" wx:if="{{item.last_logged_at}}">
+        Last: {{item.last_logged_at}}
+      </text>
+    </view>
+  </view>
+</view>

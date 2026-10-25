@@ -1,0 +1,19 @@
+[Unit]
+Description=EventRegister rootless Podman Compose stack
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+# @PROJECT_DIR@ and @COMPOSE@ are replaced by deploy.sh at install time.
+WorkingDirectory=@PROJECT_DIR@
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+ExecStart=@COMPOSE@ up -d
+ExecStop=@COMPOSE@ down
+TimeoutStartSec=300
+TimeoutStopSec=120
+
+[Install]
+WantedBy=default.target

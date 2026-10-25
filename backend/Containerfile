@@ -1,0 +1,31 @@
+# syntax=docker/dockerfile:1
+
+FROM docker.io/library/rust:1.99-slim-bookworm AS builder
+WORKDIR /app
+
+# Build dependencies in their own layer so source-only changes stay fast.
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src \
+    && printf 'fn main() {}\n' > src/main.rs \
+    && cargo build --release --locked \
+    && rm -rf src
+
+COPY src ./src
+RUN touch src/main.rs && cargo build --release --locked
+
+FROM docker.io/library/debian:bookworm-slim AS runtime
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --system --uid 10001 --create-home app
+
+WORKDIR /app
+COPY --from=builder /app/target/release/event_register /usr/local/bin/event_register
+
+USER app
+EXPOSE 8080
+
+ENV RUST_LOG=event_register=info,tower_http=info
+
+CMD ["event_register"]
